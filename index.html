@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#7c3aed">
+  <meta name="description" content="StorySync — Your premium entertainment tracker for movies, series & books">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="StorySync">
+  <title>StorySync</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+  <meta name="msapplication-TileImage" content="icons/icon-144x144.png">
+  <meta name="msapplication-TileColor" content="#7c3aed">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- PWA Install Button -->
+<button id="install-btn">
+  <span>⬇️</span> Install App
+</button>
+
+<!-- App Shell -->
+<div id="app">
+
+  <!-- ===== SIDEBAR (desktop) ===== -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">▶</div>
+      <div class="logo-text">StorySync</div>
+    </div>
+    <nav>
+      <div class="nav-item active" data-page="home">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">Home</span>
+      </div>
+      <div class="nav-item" data-page="library">
+        <span class="nav-icon">🎬</span>
+        <span class="nav-label">Library</span>
+      </div>
+      <div class="nav-item" data-page="collections">
+        <span class="nav-icon">📚</span>
+        <span class="nav-label">Collections</span>
+      </div>
+      <div class="nav-item" data-page="timeline">
+        <span class="nav-icon">📅</span>
+        <span class="nav-label">Timeline</span>
+      </div>
+      <div class="nav-item" data-page="wrapped">
+        <span class="nav-icon">🎵</span>
+        <span class="nav-label">Wrapped</span>
+      </div>
+      <div class="nav-item" data-page="profile">
+        <span class="nav-icon">👤</span>
+        <span class="nav-label">Profile</span>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div style="color:var(--text-dim);font-size:0.72rem;line-height:1.5">StorySync v1.0<br>Your stories, your world.</div>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="main-content">
+
+    <!-- Top bar -->
+    <div class="topbar">
+      <div class="topbar-title" id="topbar-label">Home</div>
+      <div class="topbar-actions">
+        <button class="btn btn-primary" style="padding:8px 16px;font-size:0.8rem" onclick="openAddModal()">+ Add</button>
+      </div>
+    </div>
+
+    <!-- ===== HOME PAGE ===== -->
+    <div id="page-home" class="page active">
+      <div id="home-content"></div>
+    </div>
+
+    <!-- ===== LIBRARY PAGE ===== -->
+    <div id="page-library" class="page">
+      <div class="library-controls">
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="text" id="library-search" placeholder="Search titles, genres…">
+        </div>
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-filter="all">All</button>
+          <button class="filter-tab" data-filter="watched">Watched</button>
+          <button class="filter-tab" data-filter="towatch">To Watch</button>
+          <button class="filter-tab" data-filter="favorites">Favorites</button>
+        </div>
+      </div>
+      <div class="grid-auto" id="library-items"></div>
+    </div>
+
+    <!-- ===== COLLECTIONS PAGE ===== -->
+    <div id="page-collections" class="page">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:20px">
+        <button class="btn btn-primary" onclick="openAddCollection()">+ New Collection</button>
+      </div>
+      <div class="grid-3" id="collections-grid"></div>
+    </div>
+
+    <!-- ===== TIMELINE PAGE ===== -->
+    <div id="page-timeline" class="page">
+      <div class="section-header" style="margin-bottom:24px">
+        <div>
+          <div class="section-title">Your Activity</div>
+          <div class="section-subtitle">Everything you've done in StorySync</div>
+        </div>
+      </div>
+      <div class="timeline-feed" id="timeline-feed"></div>
+    </div>
+
+    <!-- ===== WRAPPED PAGE ===== -->
+    <div id="page-wrapped" class="page">
+      <div class="section-header" style="margin-bottom:24px">
+        <div>
+          <div class="section-title" style="font-family:var(--font-display)">Your Wrapped 🎵</div>
+          <div class="section-subtitle">Stats for watched &amp; read content only</div>
+        </div>
+      </div>
+      <div class="wrapped-toggle">
+        <button class="toggle-btn active" data-mode="weekly">Weekly</button>
+        <button class="toggle-btn" data-mode="monthly">Monthly</button>
+      </div>
+      <div id="wrapped-content"></div>
+    </div>
+
+    <!-- ===== PROFILE PAGE ===== -->
+    <div id="page-profile" class="page">
+      <div id="profile-content"></div>
+    </div>
+
+  </main><!-- /main-content -->
+
+</div><!-- /app -->
+
+<!-- ===== BOTTOM NAV (mobile) ===== -->
+<nav class="bottom-nav">
+  <div class="bottom-nav-item active" data-page="home">
+    <div class="nav-icon-mobile">🏠</div>
+    <span>Home</span>
+  </div>
+  <div class="bottom-nav-item" data-page="library">
+    <div class="nav-icon-mobile">🎬</div>
+    <span>Library</span>
+  </div>
+  <div class="bottom-nav-item" data-page="collections">
+    <div class="nav-icon-mobile">📚</div>
+    <span>Lists</span>
+  </div>
+  <div class="bottom-nav-item" data-page="timeline">
+    <div class="nav-icon-mobile">📅</div>
+    <span>Timeline</span>
+  </div>
+  <div class="bottom-nav-item" data-page="wrapped">
+    <div class="nav-icon-mobile">🎵</div>
+    <span>Wrapped</span>
+  </div>
+  <div class="bottom-nav-item" data-page="profile">
+    <div class="nav-icon-mobile">👤</div>
+    <span>Profile</span>
+  </div>
+</nav>
+
+<!-- FAB -->
+<button class="fab" onclick="openAddModal()" title="Add content">＋</button>
+
+<!-- ===================================================
+     MODALS
+     =================================================== -->
+
+<!-- Add / Edit Item Modal -->
+<div class="modal-overlay" id="item-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="item-modal-title">Add to Library</div>
+      <button class="modal-close" onclick="closeModal('item-modal')">✕</button>
+    </div>
+
+    <form id="item-form" onsubmit="event.preventDefault();saveItem()">
+      <!-- Poster -->
+      <div class="form-group">
+        <label class="form-label">Poster</label>
+        <div class="poster-preview-area" id="poster-preview">
+          <span style="font-size:2rem">📷</span>
+          <span>Click to upload image</span>
+        </div>
+        <input type="file" id="poster-upload" accept="image/*" style="display:none">
+        <input type="text" class="form-input" id="item-poster-url" placeholder="…or paste image URL" style="margin-top:8px">
+      </div>
+
+      <!-- Title -->
+      <div class="form-group">
+        <label class="form-label">Title *</label>
+        <input type="text" class="form-input" id="item-title" placeholder="e.g. Dune: Part Two" required>
+      </div>
+
+      <!-- Type & Genre -->
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Type *</label>
+          <select class="form-select" id="item-type">
+            <option value="movie">🎬 Movie</option>
+            <option value="series">📺 Series</option>
+            <option value="book">📚 Book</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Genre</label>
+          <input type="text" class="form-input" id="item-genre" placeholder="Sci-Fi, Drama…">
+        </div>
+      </div>
+
+      <!-- Status -->
+      <div class="form-group">
+        <label class="form-label">Status *</label>
+        <select class="form-select" id="item-status">
+          <option value="towatch">📌 To Watch / To Read</option>
+          <option value="watched">✅ Watched / Read</option>
+        </select>
+      </div>
+
+      <!-- Rating (watched only) -->
+      <div class="form-group" id="rating-section" style="display:none">
+        <label class="form-label">Rating</label>
+        <div class="star-input">
+          <button type="button" class="star-btn" data-star="1">★</button>
+          <button type="button" class="star-btn" data-star="2">★</button>
+          <button type="button" class="star-btn" data-star="3">★</button>
+          <button type="button" class="star-btn" data-star="4">★</button>
+          <button type="button" class="star-btn" data-star="5">★</button>
+        </div>
+      </div>
+
+      <!-- Watched Date (watched only) -->
+      <div class="form-group" id="watched-date-section" style="display:none">
+        <label class="form-label">Date Watched / Read</label>
+        <input type="date" class="form-input" id="item-watched-date">
+      </div>
+
+      <!-- Review (watched only) -->
+      <div class="form-group" id="review-section" style="display:none">
+        <label class="form-label">Review</label>
+        <textarea class="form-textarea" id="item-review" placeholder="Write your thoughts…"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-full">Save to Library</button>
+    </form>
+  </div>
+</div>
+
+<!-- Item Detail Modal -->
+<div class="modal-overlay" id="detail-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div></div>
+      <button class="modal-close" onclick="closeModal('detail-modal')">✕</button>
+    </div>
+    <div id="detail-content"></div>
+  </div>
+</div>
+
+<!-- Collection Modal -->
+<div class="modal-overlay" id="collection-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">New Collection</div>
+      <button class="modal-close" onclick="closeModal('collection-modal')">✕</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Collection Name *</label>
+      <input type="text" class="form-input" id="col-name" placeholder="e.g. Sci-Fi Masterpieces">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Description</label>
+      <input type="text" class="form-input" id="col-desc" placeholder="A short description…">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Cover Image URL</label>
+        <input type="text" class="form-input" id="col-cover-url" placeholder="Paste image URL">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Emoji Icon</label>
+        <input type="text" class="form-input" id="col-emoji" placeholder="✨" maxlength="4">
+      </div>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="saveCollection()">Create Collection</button>
+  </div>
+</div>
+
+<!-- Collection Detail Modal -->
+<div class="modal-overlay" id="col-detail-modal">
+  <div class="modal" style="max-width:600px">
+    <div class="modal-header">
+      <div class="modal-title" id="col-detail-title"></div>
+      <button class="modal-close" onclick="closeModal('col-detail-modal')">✕</button>
+    </div>
+    <div id="col-detail-content"></div>
+  </div>
+</div>
+
+<!-- Item Picker Modal (for adding to collection) -->
+<div class="modal-overlay" id="item-picker-modal">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-header">
+      <div class="modal-title">Add Item</div>
+      <button class="modal-close" onclick="closeModal('item-picker-modal')">✕</button>
+    </div>
+    <div id="item-picker-list" style="display:flex;flex-direction:column;gap:8px;max-height:400px;overflow-y:auto"></div>
+  </div>
+</div>
+
+<!-- Edit Profile Modal -->
+<div class="modal-overlay" id="edit-profile-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Edit Profile</div>
+      <button class="modal-close" onclick="closeModal('edit-profile-modal')">✕</button>
+    </div>
+    <div class="edit-profile-form">
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <input type="text" class="form-input" id="edit-username" placeholder="Your name">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Bio</label>
+        <textarea class="form-textarea" id="edit-bio" placeholder="Tell your story…" style="min-height:80px"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Favorite Genres (comma-separated)</label>
+        <input type="text" class="form-input" id="edit-genres" placeholder="Sci-Fi, Drama, Thriller">
+      </div>
+      <button class="btn btn-primary btn-full" onclick="saveProfileEdit()">Save Profile</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>

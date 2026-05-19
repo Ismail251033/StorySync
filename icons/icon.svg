@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0a0f"/>
+      <stop offset="100%" stop-color="#16162a"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+    <linearGradient id="ring" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a78bfa"/>
+      <stop offset="100%" stop-color="#f9a8d4"/>
+    </linearGradient>
+  </defs>
+  <!-- Background rounded square -->
+  <rect width="512" height="512" rx="110" fill="url(#bg)"/>
+  <!-- Subtle glow -->
+  <circle cx="256" cy="256" r="220" fill="none" stroke="rgba(124,58,237,0.15)" stroke-width="1"/>
+  <!-- Outer ring -->
+  <circle cx="256" cy="256" r="180" fill="none" stroke="url(#ring)" stroke-width="6" stroke-dasharray="20 8" stroke-linecap="round"/>
+  <!-- Inner circle -->
+  <circle cx="256" cy="256" r="140" fill="url(#accent)" opacity="0.15"/>
+  <!-- Play triangle (cinema) -->
+  <polygon points="210,190 210,322 340,256" fill="url(#accent)" rx="8"/>
+  <!-- Book lines (left) -->
+  <rect x="100" y="210" width="72" height="8" rx="4" fill="#a78bfa" opacity="0.7"/>
+  <rect x="100" y="228" width="56" height="8" rx="4" fill="#a78bfa" opacity="0.4"/>
+  <rect x="100" y="246" width="64" height="8" rx="4" fill="#a78bfa" opacity="0.5"/>
+  <rect x="100" y="264" width="48" height="8" rx="4" fill="#a78bfa" opacity="0.3"/>
+  <rect x="100" y="282" width="60" height="8" rx="4" fill="#a78bfa" opacity="0.4"/>
+  <!-- Star (top right) -->
+  <polygon points="390,130 398,154 424,154 403,169 411,193 390,178 369,193 377,169 356,154 382,154" fill="#f59e0b" opacity="0.9"/>
+  <!-- Bottom dots (activity) -->
+  <circle cx="176" cy="368" r="8" fill="#ec4899" opacity="0.8"/>
+  <circle cx="204" cy="368" r="8" fill="#7c3aed" opacity="0.8"/>
+  <circle cx="232" cy="368" r="8" fill="#14b8a6" opacity="0.8"/>
+</svg>
